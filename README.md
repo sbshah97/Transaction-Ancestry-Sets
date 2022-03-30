@@ -4,6 +4,12 @@ Building a basic transaction ancestry set calculator.
 ## Task 1
 Fetches all transactions for a block 680000
 
+## Task 2
+Find count of direct + indirect parents of all tra
+
+## Task 3
+Print top 10 transactions the highest direct + indirect parent count
+
 ## APIs to use
 
 ### Step 1
@@ -85,28 +91,8 @@ curl --location --request GET 'https://blockstream.info/api/block/00000000000000
 ## Run code
 go run .
 
-[
-    txId: A
-    vIn {
-        txId: B
-    }
-    taxId: C
-        vIn {
-            txId: E,
-            txId: A
-    }
-    txId: B
-        vIn {
-            txId: D
-            txId: E
-        }
 
-]
-
-B is parent of A
-
-map[string]bool
-
+## Calculating Direct + Indirect Parents
 A
 |
 B
@@ -115,5 +101,6 @@ C
 
 Direct + Indirect parents = DP(A) + DP(B) + DP(C)
 
-dip_map[string]int
+## References
 
+* [Blockstream APIs](https://github.com/Blockstream/esplora/blob/master/API.md)

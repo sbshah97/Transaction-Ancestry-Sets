@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 )
 
 func makeGetRequest(uri string) ([]byte, error) {
@@ -83,4 +84,27 @@ func dequeue(queue []string) []string {
 
 func front(queue []string) string {
 	return queue[0]
+}
+
+// Helper function to sort and print top 10 values from key value pair
+func sortAndPrintTop10(dipMapCount map[string]int) {
+	var ss []kv
+	for k, v := range dipMapCount {
+		ss = append(ss, kv{k, v})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
+
+	count := 0
+	fmt.Println("Task 3 complete")
+	for _, kv := range ss {
+		if count > 10 {
+			break
+		}
+		fmt.Println(kv.Key, kv.Value)
+		count += 1
+	}
+
 }

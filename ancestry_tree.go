@@ -2,15 +2,9 @@ package main
 
 import (
 	"fmt"
-	"sort"
 )
 
 var indexOutOfBounds = false
-
-type kv struct {
-	Key   string
-	Value int
-}
 
 func main() {
 
@@ -48,7 +42,7 @@ func main() {
 	for index := range globalTransactionList {
 		for _, inputTransaction := range globalTransactionList[index].VIn {
 
-			// prev existence
+			// prev existence and avoiding pointing to the same node
 			if indexMap[inputTransaction.TxId] && globalTransactionList[index].TxId != inputTransaction.TxId {
 				// count++
 				directParentCount[globalTransactionList[index].TxId] += 1
@@ -61,9 +55,11 @@ func main() {
 		}
 	}
 
+	// All transactions are present in Global Transaction List
 	fmt.Println("Task 1 complete")
 	fmt.Println("Size of Transaction List: ", len(globalTransactionList))
 
+	// All parents for each node are present in direct parent map
 	fmt.Println("Task 2 complete")
 	fmt.Println("Length of all transactions", len(directParentMap))
 
@@ -71,6 +67,9 @@ func main() {
 	dipMapCount := make(map[string]int)
 
 	// Iterate over all transactions and get their dip map
+	// To get the sum of indirect and direct parents
+	// We iterate over all transactions who have a direct parent
+	// dip(A) = dp(A) + ip(A)
 	for child := range directParentMap {
 
 		searchQueue := []string{}
@@ -92,23 +91,7 @@ func main() {
 		}
 	}
 
-	var ss []kv
-	for k, v := range dipMapCount {
-		ss = append(ss, kv{k, v})
-	}
-
-	sort.Slice(ss, func(i, j int) bool {
-		return ss[i].Value > ss[j].Value
-	})
-
-	count := 0
-	fmt.Println("Task 3 complete")
-	for _, kv := range ss {
-		if count > 10 {
-			break
-		}
-		fmt.Println(kv.Key, kv.Value)
-		count += 1
-	}
+	// Task 3: All direct + indirect parent map count is present in dipMapCounts
+	sortAndPrintTop10(dipMapCount)
 
 }
